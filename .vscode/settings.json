@@ -1,0 +1,12 @@
+{
+  "sqltools.useNodeRuntime": true,
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "database": "C:\\Users\\Undead34\\AppData\\Roaming\\Cismu\\UserData\\Databases\\Cismu-Player.db",
+      "group": "Cismu",
+      "name": "Cismu"
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+:root {
+  --xw-bars: 16vw;
+  --player-height: 5rem;
+  --nav-height: 1.25rem;
+  --font-size-base: 16;
+}
+
+#root,
+body,
+html {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  font-size: var(--font-size-base);
+}
+
+.app-container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "navbar navbar navbar"
+    "sidebar mainview leftbar"
+    "player player player";
+  height: 100%;
+  width: 100%;
+}
+
+.nav-bar {
+  grid-area: navbar;
+  height: var(--nav-height);
+}
+
+.side-bar {
+  grid-area: sidebar;
+  width: var(--xw-bars);
+  height: 100%;
+}
+
+.left-bar {
+  grid-area: leftbar;
+  width: var(--xw-bars);
+  height: 100%;
+}
+
+.main-view {
+  grid-area: mainview;
+  width: 100%;
+  height: 100%;
+  contain: content;
+  overflow: auto;
+}
+
+.web-player {
+  grid-area: player;
+  height: var(--player-height);
+}
+
+@media screen and (max-width: 800px) {
+  :root {
+    --xw-bars: 20vw;
+    --font-size-base: 14px
+  }
+}
+
+@media screen and (min-width: 801px) and (max-width: 1280px) {
+  :root {
+    --xw-bars: 19vw;
+    --font-size-base: 16px
+  }
+}
+
+@media screen and (min-width: 1281px) and (max-width: 1366px) {
+  :root {
+    --xw-bars: 18vw;
+    --font-size-base: 16px
+  }
+}
+
+@media screen and (min-width: 1367px) and (max-width: 1440px) {
+  :root {
+    --xw-bars: 17vw;
+    --font-size-base: 16px
+  }
+}
+
+@media screen and (min-width: 1441px) and (max-width: 1600px) {
+  :root {
+    --xw-bars: 16vw;
+    --font-size-base: 17px
+  }
+}
+
+@media screen and (min-width: 1601px) and (max-width: 1920px) {
+  :root {
+    --xw-bars: 15vw;
+    --font-size-base: 18px
+  }
+}
+
+@media screen and (min-width: 1921px) and (max-width: 2560) {
+  :root {
+    --xw-bars: 15vw;
+    --font-size-base: 32px
+  }
+}
