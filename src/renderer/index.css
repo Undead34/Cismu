@@ -1,8 +1,28 @@
 :root {
-  --xw-bars: 16vw;
+  --xw-bars: 18.75rem;
   --player-height: 5rem;
-  --nav-height: 1.25rem;
+  --nav-height: 5rem;
   --font-size-base: 16;
+
+  /* COLORS TEXT */
+  --text-primary-color: #fdfdfd;
+  --secondary-primary-color: #7d7d7f;
+
+  /* COLORS BORDERS */
+  --border-primary-color: #464543;
+
+  /* COLORS BACKGROUNDS */
+  --background-color-primary: #272624;
+  --background-color-secondary: #3d3d3f;
+  --background-color-tertiary: #313131;
+
+  /* BUTTONS COLORS */
+  --buttons-background-color-primary: #272624;
+  --buttons-border-color-primary: #363634;
+
+  --buttons-hover-background: linear-gradient(90deg, rgba(244, 94, 108, 1) 0%, rgba(176, 104, 188, 1) 100%);
+
+  --pi-rem: 3.14159265359rem;
 }
 
 #root,
@@ -21,27 +41,26 @@ html {
   grid-template-rows: auto 1fr auto;
   grid-template-areas:
     "navbar navbar navbar"
-    "sidebar mainview leftbar"
+    "sidebar mainview mainview"
     "player player player";
   height: 100%;
   width: 100%;
+  color: var(--text-primary-color);
 }
 
 .nav-bar {
   grid-area: navbar;
   height: var(--nav-height);
+  border-bottom: 1.9px solid var(--border-primary-color);
+  background-color: var(--background-color-secondary);
 }
 
 .side-bar {
   grid-area: sidebar;
   width: var(--xw-bars);
   height: 100%;
-}
-
-.left-bar {
-  grid-area: leftbar;
-  width: var(--xw-bars);
-  height: 100%;
+  background-color: var(--background-color-primary);
+  border-right: 1.9px solid var(--border-primary-color);
 }
 
 .main-view {
@@ -50,58 +69,137 @@ html {
   height: 100%;
   contain: content;
   overflow: auto;
+  background-color: var(--background-color-primary);
 }
 
 .web-player {
   grid-area: player;
   height: var(--player-height);
+  border-top: 1.9px solid var(--border-primary-color);
+  background-color: var(--background-color-secondary);
+  display: flex;
 }
 
+.web-player .box_left {
+  min-width: 26.875rem;
+  border-right: 1.9px solid var(--border-primary-color);
+}
+
+.web-player .box_mid {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.web-player .box_mid .controls {
+  flex: 1;
+}
+.web-player .box_mid .timecontrols {
+  min-width: 1.5rem;
+}
+
+.web-player .box_right {
+  min-width: 26.875rem;
+  border-left: 1.9px solid var(--border-primary-color);
+}
+
+.button-primary {
+  position: relative;
+  background-color: var(--buttons-background-color-primary);
+  border: 2px solid var(--buttons-border-color-primary);
+  color: var(--text-primary-color);
+  border-radius: var(--pi-rem);
+  min-width: 100px;
+  min-height: 30px;
+  transition: all 200ms ease-in;
+}
+
+.button-primary:hover {
+  background: var(--buttons-hover-background);
+  border: none;
+}
+
+.button-primary:hover:before,
+.button-primary:hover:after {
+  opacity: 1;
+}
+
+.button-primary:before {
+  opacity: 0;
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--buttons-hover-background);
+  transform: translate3d(0px, 0px, 0) scale(1);
+  filter: blur(10px);
+  opacity: var(0.88);
+  transition: opacity 0.3s;
+  border-radius: inherit;
+}
+
+.button-primary::after {
+  opacity: 0;
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: inherit;
+  border-radius: inherit;
+}
+
+/* 
 @media screen and (max-width: 800px) {
   :root {
     --xw-bars: 20vw;
-    --font-size-base: 14px
+    --font-size-base: 14px;
   }
 }
 
 @media screen and (min-width: 801px) and (max-width: 1280px) {
   :root {
     --xw-bars: 19vw;
-    --font-size-base: 16px
+    --font-size-base: 16px;
   }
 }
 
 @media screen and (min-width: 1281px) and (max-width: 1366px) {
   :root {
     --xw-bars: 18vw;
-    --font-size-base: 16px
+    --font-size-base: 16px;
   }
 }
 
 @media screen and (min-width: 1367px) and (max-width: 1440px) {
   :root {
     --xw-bars: 17vw;
-    --font-size-base: 16px
+    --font-size-base: 16px;
   }
 }
 
 @media screen and (min-width: 1441px) and (max-width: 1600px) {
   :root {
     --xw-bars: 16vw;
-    --font-size-base: 17px
+    --font-size-base: 17px;
   }
 }
 
 @media screen and (min-width: 1601px) and (max-width: 1920px) {
   :root {
     --xw-bars: 15vw;
-    --font-size-base: 18px
+    --font-size-base: 18px;
   }
 }
 
 @media screen and (min-width: 1921px) and (max-width: 2560) {
   :root {
     --xw-bars: 15vw;
-    --font-size-base: 32px
+    --font-size-base: 32px;
   }
-}
+} */

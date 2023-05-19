@@ -5,6 +5,11 @@ import os from "os";
 
 class Logger {
   private LoggerInit: number = new Date().getTime();
+  /**
+   * - 0 for only errors
+   * - 1 for debug and logs
+   * - 2 for all
+   */
   private LOG_LEVEL: number = 2;
 
   constructor() {
@@ -41,22 +46,22 @@ class Logger {
   }
 
   error(message: string, error?: Error) {
-    if (error && this.LOG_LEVEL >= 2) {
-      console.log(error.message, error.name, error.stack);
-    }
-
     const logMessage = `[${this.getTime()}]` + " | ERROR | " + `[${message}]`;
     console.error(logMessage);
     this.writeToFile(logMessage);
+
+    if (error && this.LOG_LEVEL >= 2) {
+      console.log(error.message, error.name, error.stack);
+    }
   }
 
-  crit(message: string | Error) {
-    if (message instanceof Error) {
-      //
-    } else {
-      const logMessage = `[${this.getTime()}]` + " | CRIT | " + `[${message}]`;
-      console.error(logMessage);
-      this.writeToFile(logMessage);
+  crit(message: string, error?: Error) {
+    const logMessage = `[${this.getTime()}]` + " | CRIT | " + `[${message}]`;
+    console.error(logMessage);
+    this.writeToFile(logMessage);
+
+    if (error && this.LOG_LEVEL >= 2) {
+      console.log(error.message, error.name, error.stack);
     }
   }
 

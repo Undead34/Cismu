@@ -37,16 +37,25 @@ async function setup() {
       switch (option.response) {
         case 0:
           logger.debug("Continuing...");
-          logger.crit(error);
+          logger.crit(
+            "A critical error occurred while trying to configure the application on its first startup.",
+            error
+          );
           break;
         case 1:
           logger.debug("Repairing...");
-          logger.crit(error);
+          logger.crit(
+            "A critical error occurred while trying to configure the application on its first startup.",
+            error
+          );
           lifecycle.relaunch();
           break;
         case 2:
           logger.debug("Leaving...");
-          logger.crit(error);
+          logger.crit(
+            "A critical error occurred while trying to configure the application on its first startup.",
+            error
+          );
           app.exit(1);
       }
     };

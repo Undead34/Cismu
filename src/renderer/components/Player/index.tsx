@@ -229,12 +229,24 @@ class Player extends React.Component<IProps, IState> {
   render() {
     return (
       <div className="web-player">
-        <input type="range" value={this.state.currentTime} onChange={(event) => this.setCurrentTime(parseFloat(event.target.value))} min={0} max={this.state.duration} step={1} />
-        <button onClick={() => this.prev()}>back</button>
-        <button onClick={() => this.togglePlayPause()}>play/pause</button>
-        <button onClick={() => this.next()}>next</button>
-        <input type="range" value={this.state.volume} onChange={(event) => this.setVolume(parseFloat(event.target.value))} min={0} max={1} step={0.005} />
-        <audio src="" controls></audio>
+        <div className="box_left">
+          Uni
+        </div>
+        <div className="box_mid">
+          <div className="controls">
+            <input type="range" value={this.state.volume} onChange={(event) => this.setVolume(parseFloat(event.target.value))} min={0} max={1} step={0.005} />
+            <button onClick={() => this.prev()}>back</button>
+            <button onClick={() => this.togglePlayPause()}>play/pause</button>
+            <button onClick={() => this.next()}>next</button>
+          </div>
+          <div className="timecontrols">
+            <input type="range" value={this.state.currentTime} onChange={(event) => this.setCurrentTime(parseFloat(event.target.value))} min={0} max={this.state.duration} step={1} />
+          </div>
+        </div>
+        <div className="box_right">
+          <button>Like</button>
+          <audio src="" controls></audio>
+        </div>
       </div>
     )
   }

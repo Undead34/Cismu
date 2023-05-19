@@ -1,6 +1,7 @@
 import TopLoadingBar from "../components/TopLoadingBar";
 import React, { useEffect, useState } from "react";
-import "./Welcome.css";
+import { Link } from "react-router-dom";
+// import "./Welcome.css";
 
 interface IAction {
   message: string;
@@ -8,21 +9,10 @@ interface IAction {
 }
 
 export function Welcome() {
-  const [action, setAction] = useState<IAction>({
-    message: "Welcome"
-  });
-
-  useEffect(() => {
-    (async () => {
-      const result = await window.CismuAPI.invoke<IAction>("cismu:get-state");
-      setAction(result);
-    })()
-  }, []);
-
   return (
-    <div className="welcome">
-      <h2>{action.message}</h2>
-    </div>
+    <>
+      <Link to={"/"}>Go</Link>
+    </>
   )
 }
 

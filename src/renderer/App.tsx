@@ -1,7 +1,6 @@
 // React/React Router
-import { HashRouter, Route, Routes, Navigate } from "react-router-dom";
+import { HashRouter, Route, Routes, Link } from "react-router-dom";
 import ReactDOM from "react-dom/client";
-import React from "react";
 import "./ipcRenderer"
 
 // Redux
@@ -9,14 +8,14 @@ import { Provider } from "react-redux";
 import store from "./store/store";
 
 // Components
+import { Welcome } from "./views/Welcome";
+import Player from "./components/Player";
+import Library from "./views/Library";
 import Search from "./views/Search";
 import Home from "./views/Home";
-import Library from "./views/Library";
-import Player from "./components/Player";
 
 // Styles
 import "./index.css";
-import { Welcome } from "./views/Welcome";
 
 function App() {
   return (
@@ -29,8 +28,8 @@ function App() {
           <Route path="/search" Component={Search} />
           <Route path="/library" Component={Library} />
         </Routes>
+        <Link to={"/welcome"}>Go</Link>
       </div>
-      <div className="left-bar"></div>
       <Player />
     </div>
   );
@@ -44,9 +43,8 @@ root.render(
     <Provider store={store}>
       <HashRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/welcome" />} />
+          <Route path="/" Component={App} />
           <Route path="/welcome" Component={Welcome} />
-          <Route path="*" Component={App} />
         </Routes>
       </HashRouter>
     </Provider>
