@@ -1,5 +1,6 @@
 import { BrowserWindow, app } from "electron";
 import { product, root } from "./lib/Constants";
+import logger from "../shared/lib/logger";
 import bootstrap from "./lib/Bootstrap";
 import Config from "./lib/Config";
 
@@ -25,7 +26,9 @@ if (require("electron-squirrel-startup")) {
 }
 
 const createWindow = async (): Promise<void> => {
-  const bounds = await config.bounds;
+  logger.log("Creating main window...");
+
+  const bounds = config.bounds;
   // Create the browser window.
   mainWindow = new BrowserWindow({
     show: true,
@@ -42,10 +45,11 @@ const createWindow = async (): Promise<void> => {
   });
 
   // and load the index.html of the app.
+  logger.log("Main window created successfully, loading view...");
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  if (process.env.NODE_ENV !== "production" || process.argv.includes("--devtools")) {
+  if (process.env.NODE_ENV === "development" || process.argv.includes("--devtools")) {
     // #region devtools
     // This is disabled until the [ReactDevTools, ReduxDevTools] extensions update the manifest to version 3 because it will no longer be supported.
     // const ReduxDevTools = path.join(process.env.LOCALAPPDATA, "/Google/Chrome/User Data/Default/Extensions", "/lmhkpmbekcpmknklioeibfkpmmfibljd")
@@ -65,15 +69,19 @@ const createWindow = async (): Promise<void> => {
     //   console.log(exists(ReduxDevTools), exists(ReactDevTools))
     // }
     // #endregion
-    await mainWindow.webContents.openDevTools();
+
+    logger.log("Opening Developer Tools");
+    mainWindow.webContents.openDevTools();
   }
+
+  logger.log("Successful application start!");
 };
 
 function main() {
   if (app.isReady()) {
     createWindow();
   } else {
-    app.on("ready", createWindow);
+    app.once("ready", createWindow);
   }
 
   app.on("window-all-closed", () => {
@@ -90,15 +98,21 @@ function main() {
 }
 
 // Init Config
-(async () => {
+logger.log("Loading the configuration.");
+
+try {
   config = new Config();
-  await config.load();
-  if (!config.config) {
-    await config.createConfig();
-  } else {
-    if (!config.config.hardwareAcceleration) {
-      await app.disableHardwareAcceleration();
-    }
+  config.load();
+
+  config.config ?? config.createConfig();
+
+  if (config.config && !config.config.hardwareAcceleration) {
+    app.disableHardwareAcceleration();
   }
+
+  logger.log("Configuration successfully loaded.");
+  logger.log("Initiating start-up.");
   bootstrap(main, config);
-})();
+} catch (error) {
+  logger.error("An error occurred while loading the configuration.", error);
+}

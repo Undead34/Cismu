@@ -1,8 +1,8 @@
 import { IConfig, IBounds } from "../../shared/types/cismu";
 import logger from "../../shared/lib/logger";
 import { write } from "../../shared/lib/fs";
-import electron, { app } from "electron";
 import { paths } from "./Constants";
+import electron from "electron";
 import path from "path";
 import fs from "fs";
 
@@ -47,16 +47,15 @@ class Config {
         logger.warn("Not saving settings, it has been externally modified.");
         return;
       }
-
       // Save the configuration
       const output = minify ? JSON.stringify(this.config) : JSON.stringify(this.config, null, 2);
       await write(this.configPath, output, { atomic: true });
     } catch (error) {
-      logger.error(error);
+      logger.error("An error occurred while saving the configuration", error);
     }
   }
 
-  async load(): Promise<void> {
+  load(): void {
     // Module Init
     this.loadConfig(this.configPath);
   }
@@ -65,9 +64,9 @@ class Config {
     return this.checkBounds(this.config.bounds);
   }
 
-  private async checkBounds(bounds?: IBounds): Promise<IBounds> {
+  private checkBounds(bounds?: IBounds): IBounds {
     try {
-      const defaultConfig = await this.getDefaultConfig();
+      const defaultConfig = this.getDefaultConfig();
       if (bounds === undefined) {
         bounds = defaultConfig.bounds;
       }
@@ -121,16 +120,16 @@ class Config {
     }
     // This code should be unreachable, but TypeScript requires a return statement
     // for all code paths, so we'll throw an error to make it happy.
-    logger.error(new Error("Unhandled value type"));
+    logger.error("Unhandled value type");
   }
 
-  async createConfig() {
-    this.config = this.cloneDeep(await this.getDefaultConfig());
-    await this.save();
+  createConfig() {
+    this.config = this.cloneDeep(this.getDefaultConfig());
+    this.save();
   }
 
   private loadConfig(configPath: string) {
-    if (!configPath) logger.error(new TypeError("An unexpected error has occurred in the configPath"));
+    if (!configPath) logger.error("An unexpected error has occurred in the configPath");
     configPath = path.resolve(configPath);
 
     // Check if directory exists, creates it if needed
@@ -147,7 +146,7 @@ class Config {
       }
     } catch (err) {
       this.config = null;
-      logger.error(err);
+      logger.error("The configuration file appears to be corrupted");
     }
   }
 }

@@ -30,6 +30,7 @@ export const paths = {
     database: path.join(databases, `${product.machine_name}.db`),
     setting: path.join(userDataPath, "setting.json"),
     test: path.join(userDataPath, ".test"),
+    repair: path.join(root, ".repair"),
   },
 };
 
@@ -112,8 +113,3 @@ export const SQL_CREATE_DATABASE = `
 CREATE TABLE config (version TEXT, app TEXT);
 CREATE TABLE musics (id TEXT PRIMARY KEY, title TEXT, author TEXT, img_src TEXT, id3_tags TEXT, metadata TEXT, path TEXT, duration INTEGER, favorite BOOLEAN);
 `;
-
-// import crypto from "crypto";
-// const hash = crypto.createHash("sha512");
-// hash.update(`Cismu\\Player\\${product.version}\\${product.uuids.uuid}`);
-// product.uuids.SHA512 = hash.digest("hex");
