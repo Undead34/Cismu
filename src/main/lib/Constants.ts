@@ -36,21 +36,21 @@ export const paths = {
 
 export const extensions = [
   // MP3 / MP4
-  ".mp3",
-  ".mp4",
-  ".aac",
-  ".m4a",
-  ".3gp",
-  ".wav",
+  "mp3",
+  "mp4",
+  "aac",
+  "m4a",
+  "3gp",
+  "wav",
   // Opus
-  ".ogg",
-  ".ogv",
-  ".ogm",
-  ".opus",
+  "ogg",
+  "ogv",
+  "ogm",
+  "opus",
   // Flac
-  ".flac",
+  "flac",
   // web media
-  ".webm",
+  "webm",
 ];
 
 export default {

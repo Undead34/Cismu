@@ -2,40 +2,12 @@ import { next, prev, setCurrentIndex } from "../../../renderer/store/slices/play
 import { Music } from "../../../shared/types/cismu";
 import store from "../../../renderer/store/store";
 import React from "react";
-
-// class Playlist {
-//   private queue: Music[];
-//   private currentIndex: number;
-
-//   constructor() {
-//     this.queue = [];
-//     this.currentIndex = 0;
-
-//     document.addEventListener("playlist:set", () => {
-//       this.queue = store.getState().playlistReducer.playlist.songs
-//     })
-//   }
-
-//   public next(): Music {
-//     this.currentIndex = (this.currentIndex + 1) % this.queue.length;
-//     return this.queue[this.currentIndex];
-//   }
-
-//   public prev(): Music {
-//     this.currentIndex = (this.currentIndex - 1 + this.queue.length) % this.queue.length;
-//     return this.queue[this.currentIndex];
-//   }
-
-//   public random(): Music {
-//     const randomIndex = Math.floor(Math.random() * this.queue.length);
-//     this.currentIndex = randomIndex;
-//     return this.queue[randomIndex];
-//   }
-
-//   public getCurrent(): Music {
-//     return this.queue[this.currentIndex];
-//   }
-// }
+import { IoMdPause, IoMdVolumeHigh, IoMdAdd } from "react-icons/io";
+import { AiFillForward, AiFillBackward, AiFillHeart } from "react-icons/ai"
+import { MdPlaylistAdd } from "react-icons/md"
+import { TfiLoop } from "react-icons/tfi"
+import { BsShuffle } from "react-icons/bs"
+import "../../styles/player.css";
 
 
 class AudioPlayer {
@@ -229,27 +201,88 @@ class Player extends React.Component<IProps, IState> {
   render() {
     return (
       <div className="web-player">
-        <div className="box_left">
-          Uni
+        <div className="box-left">
+          Hola
         </div>
-        <div className="box_mid">
-          <div className="controls">
-            <input type="range" value={this.state.volume} onChange={(event) => this.setVolume(parseFloat(event.target.value))} min={0} max={1} step={0.005} />
-            <button onClick={() => this.prev()}>back</button>
-            <button onClick={() => this.togglePlayPause()}>play/pause</button>
-            <button onClick={() => this.next()}>next</button>
-          </div>
-          <div className="timecontrols">
-            <input type="range" value={this.state.currentTime} onChange={(event) => this.setCurrentTime(parseFloat(event.target.value))} min={0} max={this.state.duration} step={1} />
-          </div>
-        </div>
-        <div className="box_right">
-          <button>Like</button>
-          <audio src="" controls></audio>
+        <PlayerControls />
+        <div className="box_right" >
+          <button><IoMdAdd /></button>
+          <button><MdPlaylistAdd /></button>
+          <button><AiFillHeart /></button>
+          <button><TfiLoop /></button>
+          <button><BsShuffle /></button>
         </div>
       </div>
     )
   }
 }
 
+function PlayerControls() {
+  return (
+    <div className="player-controls">
+      <div className="controls">
+        <div className="controls-buttons">
+          <button><AiFillBackward /></button>
+          <button><IoMdPause /></button>
+          <button><AiFillForward /></button>
+        </div>
+        <div className="controls-inputs">
+          <button><IoMdVolumeHigh /></button>
+        </div>
+      </div>
+      <div className="time-controls">
+        <div className="time-controls-data">
+          <span>3:58</span>
+          <span>-1:53</span>
+        </div>
+        <div className="time-controls-slider">
+          <input min={0} max={100} type="range" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default Player
+
+
+
+{/* <input type="range" value={this.state.volume} onChange={(event) => this.setVolume(parseFloat(event.target.value))} min={0} max={1} step={0.005} /> */ }
+{/* <button onClick={() => this.prev()}>back</button> */ }
+{/* <button onClick={() => this.togglePlayPause()}>play/pause</button> */ }
+{/* <button onClick={() => this.next()}>next</button> */ }
+{/* <input type="range" value={this.state.currentTime} onChange={(event) => this.setCurrentTime(parseFloat(event.target.value))} min={0} max={this.state.duration} step={1} /> */ }
+
+// class Playlist {
+//   private queue: Music[];
+//   private currentIndex: number;
+
+//   constructor() {
+//     this.queue = [];
+//     this.currentIndex = 0;
+
+//     document.addEventListener("playlist:set", () => {
+//       this.queue = store.getState().playlistReducer.playlist.songs
+//     })
+//   }
+
+//   public next(): Music {
+//     this.currentIndex = (this.currentIndex + 1) % this.queue.length;
+//     return this.queue[this.currentIndex];
+//   }
+
+//   public prev(): Music {
+//     this.currentIndex = (this.currentIndex - 1 + this.queue.length) % this.queue.length;
+//     return this.queue[this.currentIndex];
+//   }
+
+//   public random(): Music {
+//     const randomIndex = Math.floor(Math.random() * this.queue.length);
+//     this.currentIndex = randomIndex;
+//     return this.queue[randomIndex];
+//   }
+
+//   public getCurrent(): Music {
+//     return this.queue[this.currentIndex];
+//   }
+// }

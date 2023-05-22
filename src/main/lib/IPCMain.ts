@@ -1,34 +1,37 @@
 import { BrowserWindow, ipcMain } from "electron";
 import Config from "./Config";
+import MusicManager from "./MusicManager";
 
 export class IPCMain {
   private mainWindow: BrowserWindow;
   private config: Config;
+  private musicManager: MusicManager;
 
-  constructor(mainWindow: BrowserWindow, config: Config) {
+  constructor(mainWindow: BrowserWindow, config: Config, musicManager: MusicManager) {
     this.mainWindow = mainWindow;
     this.config = config;
+    this.musicManager = musicManager;
 
-    // escuchamos el evento de inicio normal
-    ipcMain.on("normal-start", () => {
-      // hacemos las pruebas de seguridad e integridad
-      // ...
-      // cambiamos el estado de la aplicación
-      this.config.config.state = "normalstart";
-      this.config.save();
+    const webPlayerEvents = [
+      {
+        name: "cismu:webplayer:getmusic",
+        handle: false,
+        once: false,
+        action: () => {
+          this.musicManager.getMusics();
+        },
+      },
+    ];
 
-      // enviamos un mensaje al proceso de renderizado para cambiar la vista
-      this.mainWindow.webContents.send("change-view", "library");
-    });
+    for (let i = 0; i < webPlayerEvents.length; i++) {
+      const event = webPlayerEvents[i];
 
-    // escuchamos el evento de inicio sospechoso
-    ipcMain.on("suspicious-start", () => {
-      // intentamos reparar la aplicación
-      // ...
-      // cambiamos el estado de la aplicación
-      this.config.config.state = "suspiciousstart";
-      this.config.save();
-    });
+      if (event.once) {
+        event.handle ? ipcMain.handleOnce(event.name, event.action) : ipcMain.once(event.name, event.action);
+      } else {
+        event.handle ? ipcMain.handle(event.name, event.action) : ipcMain.on(event.name, event.action);
+      }
+    }
   }
 }
 
@@ -73,3 +76,27 @@ export class IPCMain {
 // //   });
 // // });
 // // ipcMain.on("cismu:update-musics", () => {});
+
+/*
+
+    // escuchamos el evento de inicio normal
+    ipcMain.on("normal-start", () => {
+      // hacemos las pruebas de seguridad e integridad
+      // ...
+      // cambiamos el estado de la aplicación
+      this.config.config.state = "normalstart";
+      this.config.save();
+
+      // enviamos un mensaje al proceso de renderizado para cambiar la vista
+      this.mainWindow.webContents.send("change-view", "library");
+    });
+
+    // escuchamos el evento de inicio sospechoso
+    ipcMain.on("suspicious-start", () => {
+      // intentamos reparar la aplicación
+      // ...
+      // cambiamos el estado de la aplicación
+      this.config.config.state = "suspiciousstart";
+      this.config.save();
+    });
+    */

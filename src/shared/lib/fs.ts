@@ -3,6 +3,7 @@ import { promisify } from "util";
 import path from "path";
 import glob from "glob";
 import fs from "fs";
+import { extensions } from "../../main/lib/Constants";
 
 type TData = number | string | boolean | null | undefined | symbol | NodeJS.ArrayBufferView;
 
@@ -224,7 +225,48 @@ function accessSync(path: string, mode: number) {
   }
 }
 
+function scanFolder(folderPath: any, extensions: any) {
+  let files: string[] = [];
+
+  function scanDirectory(directory: string) {
+    const items = fs.readdirSync(directory);
+
+    for (const item of items) {
+      const itemPath = path.join(directory, item);
+      const stat = fs.statSync(itemPath);
+
+      if (stat.isDirectory()) {
+        scanDirectory(itemPath); // Recursivamente escanea subcarpetas
+      } else if (stat.isFile() && extensions.includes(path.extname(itemPath))) {
+        files.push(itemPath);
+      }
+    }
+  }
+
+  scanDirectory(folderPath);
+
+  return files;
+}
+
+// async function scanMusic(folderPath: string) {
+//   // if (!Array.isArray(folderPaths)) {
+//   //   folderPaths = [folderPaths];
+//   // }
+
+//   // const pattern = folderPaths.map((folderPath) => `${folderPath}/**/*.{${extensions.join(",")}}`);
+
+//   // return new Promise((resolve, reject) => {
+//   //   glob(`${folderPath}/**/*.{${extensions.join(",")}`, { nodir: true }, (error, files) => {
+//   //     if (error) {
+//   //       reject(error);
+//   //     } else {
+//   //       resolve(files);
+//   //     }
+//   //   });
+//   // });
+// }
+
 const exists = fs.existsSync;
 const mkdirSync = fs.mkdirSync;
 
-export { write, writeSync, read, readSync, exists, mkdirSync, remove, removeSync, access, accessSync };
+export { write, writeSync, read, readSync, exists, mkdirSync, remove, removeSync, access, accessSync, scanFolder };

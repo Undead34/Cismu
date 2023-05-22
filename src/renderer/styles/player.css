@@ -1,0 +1,123 @@
+.web-player {
+  grid-area: player;
+  height: var(--player-height);
+  border-top: 1.9px solid var(--border-primary);
+  background-color: var(--background-secondary);
+  display: flex;
+}
+
+.web-player .box-left {
+  width: 26.875rem;
+  border-right: 1.9px solid var(--border-primary);
+}
+
+.web-player .player-controls {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.player-controls .controls {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+.player-controls .controls .controls-buttons {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.player-controls .controls .controls-buttons button {
+  padding: 0px;
+  margin: 0.3125rem;
+  font-size: 2rem;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-controls .controls .controls-inputs {
+  padding: 0 5px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-controls .controls .controls-inputs button {
+  padding: 0px;
+  font-size: 1.5rem;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.player-controls .time-controls {
+  display: flex;
+  flex-direction: column;
+  min-width: 1.5rem;
+}
+
+.player-controls .time-controls .time-controls-data {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.player-controls .time-controls .time-controls-data > :nth-child(1) {
+  margin-right: auto;
+}
+
+.player-controls .time-controls .time-controls-data > :nth-child(2) {
+  margin-left: auto;
+}
+
+.player-controls .time-controls .time-controls-slider {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.player-controls .time-controls .time-controls-slider input {
+  width: 100%;
+}
+
+.web-player .box_right {
+  width: 26.875rem;
+  border-left: 1.9px solid var(--border-primary);
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  padding: 0px 20px;
+}
+
+.web-player .box_right button {
+  padding: 0px;
+  margin: 0 10px;
+  font-size: 24px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

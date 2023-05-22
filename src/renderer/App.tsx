@@ -1,55 +1,94 @@
-// React/React Router
-import { HashRouter, Route, Routes, Link } from "react-router-dom";
-import ReactDOM from "react-dom/client";
-import "./ipcRenderer"
-
-// Redux
-import { Provider } from "react-redux";
-import store from "./store/store";
-
+import { Route, Routes, Link } from "react-router-dom";
+import PlaylistTable from "./components/PlaylistTable/PlaylistTable"
 // Components
-import { Welcome } from "./views/Welcome";
 import Player from "./components/Player";
-import Library from "./views/Library";
-import Search from "./views/Search";
-import Home from "./views/Home";
+// import Library from "./views/Library";
+// import Search from "./views/Search";
+// import Home from "./views/Home";
 
-// Styles
-import "./index.css";
+import "./styles/app.css";
 
-function App() {
+
+function Home() {
+  const data = [
+    { index: 5, liked: true, title: "E", duration: 120 },
+    { index: 4, liked: false, title: "D", duration: 123 },
+    { index: 3, liked: true, title: "C", duration: 100 },
+    { index: 1, liked: false, title: "A", duration: 90 },
+    { index: 2, liked: true, title: "B", duration: 150 },
+  ]
+
+  return (
+    <>
+      <h1>Home</h1>
+      <PlaylistTable data={data} />
+    </>
+  )
+}
+
+function Library() {
+  return (
+    <>
+      <h1>Library</h1>
+      <Link to={"/"} className="button-link"><button className="button-primary" >Home</button></Link>
+    </>
+  )
+}
+
+function Foryou() {
+  return (
+    <>
+      <h1>Foryou</h1>
+      <Link to={"/"} className="button-link"><button className="button-primary" >Home</button></Link>
+    </>
+  )
+}
+
+function Discover() {
+  return (
+    <>
+      <h1>Discover</h1>
+      <Link to={"/"} className="button-link"><button className="button-primary" >Home</button></Link>
+    </>
+  )
+}
+
+function Local() {
+  return (
+    <>
+      <h1>Local</h1>
+      <Link to={"/"} className="button-link"><button className="button-primary" >Home</button></Link>
+    </>
+  )
+}
+
+export default function App() {
   return (
     <div className="app-container">
-      <div className="nav-bar"></div>
-      <div className="side-bar"></div>
+      <div className="navbar">
+        <div className="button-group">
+          <Link to={"/library"} className="button-link"><button className="button-primary" >Library</button></Link>
+          <Link to={"/foryou"} className="button-link"><button className="button-primary" >For You</button></Link>
+          <Link to={"/discover"} className="button-link"><button className="button-primary" >Discover</button></Link>
+          <Link to={"/local"} className="button-link"><button className="button-primary" >Local</button></Link>
+        </div>
+      </div>
+      <div className="sidebar"></div>
       <div className="main-view">
         <Routes>
-          <Route path="/" Component={Home} />
-          <Route path="/search" Component={Search} />
-          <Route path="/library" Component={Library} />
+          <Route path="/" element={<Home />} />
+          <Route path="/library" element={<Library />} />
+          <Route path="/foryou" element={<Foryou />} />
+          <Route path="/discover" element={<Discover />} />
+          <Route path="/local" element={<Local />} />
         </Routes>
-        <Link to={"/welcome"}>Go</Link>
       </div>
       <Player />
     </div>
   );
 }
 
-// Render App in DOM
-const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(
-  <>
-    <Provider store={store}>
-      <HashRouter>
-        <Routes>
-          <Route path="/" Component={App} />
-          <Route path="/welcome" Component={Welcome} />
-        </Routes>
-      </HashRouter>
-    </Provider>
-  </>
-);
 
 
 // {musicList.map((music) => <h5 key={uuid()}>{music}</h5>)}

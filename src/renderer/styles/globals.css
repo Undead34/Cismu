@@ -1,0 +1,221 @@
+:root {
+  --sidebar-width: 18.75rem;
+  --player-height: 5rem;
+  --nav-height: 5rem;
+  --base-font-size: 16;
+
+  /* COLORS TEXT */
+  --text-primary: #fdfdfd;
+  --text-secondary: #7d7d7f;
+
+  /* COLORS BORDERS */
+  --border-primary: #464543;
+
+  /* COLORS BACKGROUNDS */
+  --background-primary: #272624;
+  --background-secondary: #3d3d3f;
+  --background-tertiary: #313131;
+  --background-quaternary: #333333;
+
+  /* BUTTONS COLORS */
+  --button-primary-bg: #272624;
+  --button-primary-border: #363634;
+
+  --button-hover-background: linear-gradient(90deg, rgba(244, 94, 108, 1) 0%, rgba(176, 104, 188, 1) 100%);
+
+  --pi-rem: 3.14159265359rem;
+}
+
+* {
+  box-sizing: border-box;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+#root,
+body,
+html {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  font-size: var(--base-font-size);
+}
+
+.button-primary {
+  position: relative;
+  background-color: inherit;
+  border: 2px solid var(--button-primary-border);
+  color: inherit;
+  border-radius: 0.3125rem;
+  min-width: 100px;
+  min-height: 30px;
+  transition: all 200ms ease-in;
+  transition: border 0ms;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.button-primary.rounded {
+  border-radius: var(--pi-rem);
+}
+
+.button-primary::before,
+.button-primary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: inherit;
+  transition: opacity 0.3s;
+  opacity: 0;
+  z-index: -1;
+}
+
+.button-primary::before {
+  background: var(--button-hover-background);
+  filter: blur(10px);
+}
+
+.button-primary::after {
+  background: inherit;
+}
+
+.button-primary:hover {
+  background: var(--button-hover-background);
+  border: none;
+}
+
+.button-primary:hover::before,
+.button-primary:hover::after {
+  opacity: 1;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.button-group .button-primary:not(:last-child) {
+  margin-right: 10px;
+}
+
+.button-group .button-link:not(:last-child) {
+  margin-right: 10px;
+}
+
+.button-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* 
+
+
+.button-primary {
+  position: relative;
+  background-color: var(--button-primary-bg);
+  border: 2px solid var(--button-primary-border);
+  color: var(--text-primary);
+  border-radius: var(--pi-rem);
+  min-width: 100px;
+  min-height: 30px;
+  transition: all 200ms ease-in;
+}
+
+.button-primary:hover {
+  background: var(--button-hover-background);
+  border: none;
+}
+
+.button-primary:hover:before,
+.button-primary:hover:after {
+  opacity: 1;
+}
+
+.button-primary:before {
+  opacity: 0;
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: var(--button-hover-background);
+  transform: translate3d(0px, 0px, 0) scale(1);
+  filter: blur(10px);
+  opacity: 0.88;
+  transition: opacity 0.3s;
+  border-radius: inherit;
+}
+
+.button-primary::after {
+  opacity: 0;
+  content: "";
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: inherit;
+  border-radius: inherit;
+}
+
+
+@media screen and (max-width: 800px) {
+  :root {
+    --xw-bars: 20vw;
+    --base-font-size: 14px;
+  }
+}
+
+@media screen and (min-width: 801px) and (max-width: 1280px) {
+  :root {
+    --xw-bars: 19vw;
+    --base-font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1281px) and (max-width: 1366px) {
+  :root {
+    --xw-bars: 18vw;
+    --base-font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1367px) and (max-width: 1440px) {
+  :root {
+    --xw-bars: 17vw;
+    --base-font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 1441px) and (max-width: 1600px) {
+  :root {
+    --xw-bars: 16vw;
+    --base-font-size: 17px;
+  }
+}
+
+@media screen and (min-width: 1601px) and (max-width: 1920px) {
+  :root {
+    --xw-bars: 15vw;
+    --base-font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1921px) and (max-width: 2560) {
+  :root {
+    --xw-bars: 15vw;
+    --base-font-size: 32px;
+  }
+} */

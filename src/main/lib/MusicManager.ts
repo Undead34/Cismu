@@ -1,7 +1,256 @@
+import si from "systeminformation";
+
+import logger from "../../shared/lib/logger";
+import { extensions } from "./Constants";
+import { scanFolder } from "../../shared/lib/fs";
+import Config from "./Config";
+import Cache from "./Cache";
+import async from "async";
+import { getMetadata } from "./FFmpeg";
+import { Music } from "../../shared/types/cismu";
+
+class MusicManager {
+  private musics: Music[];
+  private config: Config;
+
+  constructor(config: Config) {
+    this.config = config;
+    this.musics = [];
+  }
+
+  private async getMaxConcurrentOperations(): Promise<number> {
+    const cpuInfo = await si.currentLoad();
+    let numMaximumOperations = 0;
+
+    for (const cpu of cpuInfo.cpus) {
+      if (cpu.load < 60) {
+        numMaximumOperations++;
+      }
+    }
+
+    return Math.max(numMaximumOperations, 1);
+  }
+
+  async getMusics() {
+    let maxConcurrency = await this.getMaxConcurrentOperations();
+    console.time("TIME");
+
+    const extensions = [
+      ".mp3",
+      ".mp4",
+      ".aac",
+      ".m4a",
+      ".3gp",
+      ".wav",
+      ".ogg",
+      ".ogv",
+      ".ogm",
+      ".opus",
+      ".flac",
+      ".webm",
+    ];
+
+    let items = scanFolder("E:\\Games\\osu!\\Songs", extensions);
+
+    const queue = async.queue(async (task: any, callback) => {
+      const music: Music = await new Promise((resolve) => {
+        getMetadata(task, (err, music) => {
+          if (err) {
+            console.log(err);
+          }
+          resolve(music);
+        });
+      });
+
+      await callback();
+    }, maxConcurrency);
+
+    const updateConcurrencyLimit = async () => {
+      const currentMaxConcurrency = await this.getMaxConcurrentOperations();
+      if (currentMaxConcurrency !== maxConcurrency) {
+        maxConcurrency = currentMaxConcurrency;
+        queue.pause();
+        queue.concurrency = currentMaxConcurrency;
+        queue.resume();
+        console.log("Concurrency changed: ", currentMaxConcurrency);
+      }
+    };
+
+    const intervalID = setInterval(updateConcurrencyLimit, 1000);
+
+    queue.drain(function () {
+      console.log("All items have been processed");
+      clearInterval(intervalID);
+      console.timeEnd("TIME");
+    });
+
+    queue.error(function (err, task) {
+      console.error("Task experienced an error");
+    });
+
+    queue.push(items);
+  }
+
+  getMusicList() {
+    return this.musics;
+  }
+}
+
+export default MusicManager;
+
+// class MusicManager {
+//   private p_musics: [];
+//   private p_config: Config;
+
+//   constructor(config: Config) {
+//     this.p_config = config;
+//     this.p_musics = [];
+//   }
+
+//   private async getMaxConcurrentOperations(): Promise<number> {
+//     const cpuInfo = await si.currentLoad();
+//     let numMaximumOperations = 0;
+
+//     for (const cpu of cpuInfo.cpus) {
+//       if (cpu.load < 60) {
+//         numMaximumOperations++;
+//       }
+//     }
+
+//     if (numMaximumOperations <= 0) {
+//       return 1;
+//     } else {
+//       return numMaximumOperations;
+//     }
+//   }
+
+//   async getMusics() {
+//     let maxConcurrency = await this.getMaxConcurrentOperations();
+//     console.time("TIEMPO");
+//     // Uso de la función
+//     const extensions = [
+//       ".mp3",
+//       ".mp4",
+//       ".aac",
+//       ".m4a",
+//       ".3gp",
+//       ".wav",
+//       ".ogg",
+//       ".ogv",
+//       ".ogm",
+//       ".opus",
+//       ".flac",
+//       ".webm",
+//     ];
+
+//     let items = scanFolder("E:\\Games\\osu!\\Songs", extensions);
+
+//     // create a queue object with concurrency 2
+//     const queue = async.queue(async (task: any, callback) => {
+//       const music: Music = await new Promise((resolve) => {
+//         getMetadata(task, (err, music) => {
+//           if (err) {
+//             console.log(err);
+//           }
+//           resolve(music);
+//         });
+//       });
+
+//       await callback();
+//     }, maxConcurrency);
+
+//     const actualizarLimite = async () => {
+//       const maxConcurrenciaActual = await this.getMaxConcurrentOperations();
+//       if (maxConcurrenciaActual !== maxConcurrency) {
+//         maxConcurrency = maxConcurrenciaActual;
+//         queue.pause();
+//         queue.concurrency = maxConcurrenciaActual;
+//         queue.resume();
+//         console.log("La concurrency cambio: ", maxConcurrenciaActual);
+//       }
+//     };
+
+//     const intervalID = setInterval(actualizarLimite, 1000); // Guarda el ID del setInterval
+
+//     // assign a callback
+//     queue.drain(function () {
+//       console.log("all items have been processed");
+//       clearInterval(intervalID);
+//       console.timeEnd("TIEMPO");
+//     });
+
+//     // assign an error callback
+//     queue.error(function (err, task) {
+//       console.error("task experienced an error");
+//     });
+
+//     // add some items to the queue (batch-wise)
+//     queue.push(items);
+//   }
+
+//   get musics() {
+//     return "HOla";
+//   }
+// }
+// let maxConcurrencia = await this.getMaxConcurrentOperations();
+// let items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Ejemplo de array de items
+
+// let contador = 0;
+
+// async function procesarItem(item: any) {
+//   contador++;
+//   console.log(`Llamada a procesarItem - Contador: ${contador}`);
+//   console.log(item);
+//   // Lógica de procesamiento para cada elemento
+//   await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulación de una operación asincrónica
+//   contador--;
+// }
+
+// const queue = async.queue(async (item, callback) => {
+//   // Procesa el elemento actual
+//   await procesarItem(item);
+//   callback();
+// }, maxConcurrencia);
+
+// const actualizarLimite = async () => {
+//   const maxConcurrenciaActual = await this.getMaxConcurrentOperations();
+//   if (maxConcurrenciaActual !== maxConcurrencia) {
+//     maxConcurrencia = maxConcurrenciaActual;
+//     queue.concurrency = maxConcurrenciaActual;
+//   }
+// };
+
+// const intervalID = setInterval(actualizarLimite, 1000); // Guarda el ID del setInterval
+
+// queue.drain(() => {
+//   // Se ejecuta cuando se completa todo el procesamiento
+//   console.log("Procesamiento completo");
+//   clearInterval(intervalID);
+// });
+
+// queue.push(items, (error) => {
+//   if (error) {
+//     console.error("Error al agregar elementos a la cola", error);
+//   }
+// });
+
+// // Agrega los elementos a la cola en bucles hasta alcanzar el número máximo de concurrencia
+// for (let i = 0; i < maxConcurrencia; i++) {
+//   queue.push(items);
+// }
+
+//  // Ejemplo de uso
+//  obtenerNumeroOperacionesMaximas()
+//  .then((numOperaciones) => {
+//    console.log(`Número máximo de operaciones simultáneas: ${numOperaciones}`);
+//  })
+//  .catch((error) => {
+//    console.error(error);
+//  });
+
 // import { Music } from "../../shared/types/cismu";
 // import { scanMusicFiles } from "../../shared/lib/fs";
 // import { getMetadata } from "./FFmpeg";
-// import async from "async";
 // import os from "os";
 
 // async function getMusics(progressCallback: (completed: number, total: number) => void): Promise<Music[]> {

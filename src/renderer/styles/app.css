@@ -1,0 +1,40 @@
+.app-container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "navbar navbar navbar"
+    "sidebar mainview mainview"
+    "player player player";
+  height: 100%;
+  width: 100%;
+  color: var(--text-primary);
+}
+
+.navbar {
+  grid-area: navbar;
+  height: var(--nav-height);
+  border-bottom: 1.9px solid var(--border-primary);
+  background-color: var(--background-secondary);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  width: var(--sidebar-width);
+  height: 100%;
+  background-color: var(--background-primary);
+  border-right: 1.9px solid var(--border-primary);
+}
+
+.main-view {
+  grid-area: mainview;
+  width: 100%;
+  height: 100%;
+  contain: content;
+  overflow: auto;
+  background-color: var(--background-primary);
+}

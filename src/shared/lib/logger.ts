@@ -14,9 +14,18 @@ class Logger {
 
   constructor() {
     this.log("Starting Logger");
+
     if (this.LOG_LEVEL >= 2) {
-      this.hw();
+      // this.hw();
     }
+
+    process.on("unhandledRejection", (reason: string, p: Promise<any>) => {
+      this.crit("Unhandled Rejection at Promise", new Error(reason), p);
+    });
+
+    process.on("uncaughtException", (err) => {
+      this.error("Uncaught Exception thrown", err);
+    });
   }
 
   debug(message: string) {
@@ -55,13 +64,13 @@ class Logger {
     }
   }
 
-  crit(message: string, error?: Error) {
+  crit(message: string, error?: Error, p?: Promise<any>) {
     const logMessage = `[${this.getTime()}]` + " | CRIT | " + `[${message}]`;
     console.error(logMessage);
     this.writeToFile(logMessage);
 
-    if (error && this.LOG_LEVEL >= 2) {
-      console.log(error.message, error.name, error.stack);
+    if (error && p) {
+      console.log(error.message, error.name, error.stack, p);
     }
   }
 
@@ -86,14 +95,8 @@ class Logger {
   }
 
   private async hw() {
-    const [osInfo, cpu, mem, graphics, audio, chassis] = await Promise.all([
-      si.osInfo(),
-      si.cpu(),
-      si.mem(),
-      si.graphics(),
-      si.audio(),
-      si.chassis(),
-    ]);
+    const [osInfo, cpu, mem] = await Promise.all([si.osInfo(), si.cpu(), si.mem()]);
+    const [graphics, audio, chassis] = await Promise.all([si.graphics(), si.audio(), si.chassis()]);
 
     this.log("-----HARDWARE INFORMATION START-----");
     this.log(`Operating System: ${osInfo.distro}, ${osInfo.arch}, release ${osInfo.release}`);

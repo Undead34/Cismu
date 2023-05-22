@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from "electron";
 
 const API = {
   send(channel: string, ...args: any[]) {
-    const channels = ["cismu:get-musics"];
+    const channels = ["cismu:get-musics", "cismu:webplayer:getmusic"];
 
     if (typeof channel === "string" && channels.includes(channel)) {
       ipcRenderer.send(channel, ...args);
